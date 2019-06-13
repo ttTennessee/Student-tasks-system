@@ -9,8 +9,7 @@ import Layout from '@/layout/index'
 /* Router Modules */
 
 import nestedRouter from './modules/nested'
-
-
+const role = sessionStorage.getItem('role')
 export const constantRoutes = [
   {
     path: '/redirect',
@@ -28,6 +27,11 @@ export const constantRoutes = [
     component: () => import('@/views/login/index'),
     hidden: true,
     redirect : '/student/login'
+  },
+  {
+    path: '/dashboard',
+    hidden: true,
+    redirect : role==='student'? '/student/home' : '/teacher/home'
   },
   {
     path: '/student/login',
@@ -66,7 +70,7 @@ export const constantRoutes = [
     children: [
       {
         path: '/student/home',
-        component: () => import('@/views/dashboard/index'),
+        component: () => import('@/views/dashboard/student'),
         name: 'Dashboard',
         meta: { title: 'Dashboard', icon: 'dashboard', affix: true }
       }
@@ -108,6 +112,12 @@ export const constantRoutes = [
         component: () => import('@/views/team/create/index'),
         name: 'createTeam',
         meta: { title: '创建小组' }
+      },
+      {
+        path: '/team/mine',
+        component: () => import('@/views/team/create/index'),
+        name: 'createTeam',
+        meta: { title: '我的小组' }
       },
     ]
   },

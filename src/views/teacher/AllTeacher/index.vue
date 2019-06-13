@@ -11,7 +11,7 @@
       <el-table-column
         prop="email"
         label="邮箱"
-        width="180">
+        width="250">
       </el-table-column>
       <el-table-column
         prop="name"
@@ -23,12 +23,17 @@
         label="科目"
         width="180">
       </el-table-column>
+
+      <el-table-column v-if="role==='student'">
+        <el-button type="success" round >选择</el-button>
+      </el-table-column>
     </el-table>
   </div>
 </template>
 
 <script>
   import axios from 'axios'
+  axios.defaults.withCredentials=true;
   import qs from 'qs'
   export default {
     name: 'SHPTeacher',
@@ -41,7 +46,10 @@
     computed:{
       teacher(){
         return sessionStorage.getItem("teacher")
-      }
+      },
+      role() {
+        return sessionStorage.getItem('role')
+      },
     },
 
     created:function(){
@@ -56,19 +64,6 @@
     },
 
     methods:{
-      searchTeacher() {
-        axios.post('/student/searchTeacher',qs.stringify({
-            name:this.studentTeacher
-          })
-        )
-          .then(res => {
-            console.log(res)
-            alert(res.data.msg)
-          })
-          .catch(err => {
-            console.log(err)
-          })
-      },
       chooseTeacher() {
         axios.post('/student/chooseTeacher',qs.stringify({
             name:this.studentTeacher
@@ -81,9 +76,6 @@
           .catch(err => {
             console.log(err)
           })
-      },
-      allTeacher(){
-
       }
     }
   }

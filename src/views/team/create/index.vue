@@ -8,18 +8,13 @@
 
 <script>
   import axios from 'axios'
+  axios.defaults.withCredentials=true;
   import qs from 'qs'
   export default {
     name: 'index',
     data(){
       return {
-        fileList:[],
-        studentTeacher:'',
-        studentTeam:'',
         studentCreateTeam:'',
-        studentAllTeam:'',
-        uploadUrl:''
-
       }
     },
     computed:{
@@ -33,6 +28,7 @@
         return sessionStorage.getItem("team")
       }
     },
+
     methods:{
 
       createTeam(){
@@ -40,8 +36,11 @@
           number:this.studentCreateTeam
         }))
           .then(res=>{
-            console.log(res)
-            sessionStorage.setItem("team",)
+            console.log("11111111")
+            console.log(res.data.team)
+            console.log("11111111")
+            console.log(res.data)
+            sessionStorage.setItem("team",res.data.team)
             alert(res.data.msg)
           })
           .catch(err => {

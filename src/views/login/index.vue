@@ -57,6 +57,7 @@
 import { validEmail } from '@/utils/validate'
 
 import axios from 'axios'
+axios.defaults.withCredentials=true;
 import qs from 'qs'
 
 export default {

@@ -16,7 +16,23 @@
       <el-table-column
         prop="number"
         label="组号"
+        width="250">
+      </el-table-column>
+
+      <el-table-column
         width="180">
+        <el-button type="primary">查看组员</el-button>
+      </el-table-column>
+
+      <el-table-column
+        width="180">
+        <el-button type="success">查看作业</el-button>
+      </el-table-column>
+
+      <el-table-column
+        v-if="role === 'student'"
+        width="180">
+        <el-button type="info">加入小组</el-button>
       </el-table-column>
     </el-table>
 
@@ -26,13 +42,14 @@
 
 <script>
   import axios from 'axios'
+  axios.defaults.withCredentials=true;
   import qs from 'qs'
   export default {
     name: 'index',
     data(){
       return {
         isShow: false,
-        studentAllTeam:'',
+        studentAllTeam:[],
         studentTeam:''
       }
     },
@@ -45,9 +62,11 @@
       },
       team(){
         return sessionStorage.getItem("team")
+      },
+      role(){
+        return sessionStorage.getItem("role")
       }
     },
-
     methods:{
 
       searchTeam() {

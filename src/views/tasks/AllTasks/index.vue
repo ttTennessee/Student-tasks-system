@@ -2,16 +2,34 @@
   <div>
     <el-table
       :data="tasks"
-      style="width: 100%">
+      style="width: 100%" @row-click="getDetails">
       <el-table-column
         prop="id"
         label="ID"
         width="180">
       </el-table-column>
       <el-table-column
-        prop="number"
-        label="组号"
+        prop="name"
+        label="名字"
         width="180">
+      </el-table-column>
+      <el-table-column
+        prop="url"
+        label="地址"
+        width="550">
+      </el-table-column>
+      <el-table-column
+        width="100">
+          <a :href="url" target="view_window">
+            <el-button type="primary" icon="el-icon-view">
+              <span>运行</span>
+            </el-button>
+          </a>
+<!--        <el-link>查看<i class="el-icon-view el-icon&#45;&#45;right"></i> </el-link>-->
+      </el-table-column>
+      <el-table-column
+        width="100">
+        <el-button type="primary" v-if="role === 'student'">删除</el-button>
       </el-table-column>
     </el-table>
   </div>
@@ -20,13 +38,14 @@
 <script>
   import axios from 'axios'
   import qs from 'qs'
+  axios.defaults.withCredentials=true;
   export default {
     name: 'SHPStudent',
     data(){
       return {
         fileList:[],
         tasks:[],
-
+        url:''
       }
     },
     computed:{
@@ -35,37 +54,12 @@
       },
       dataUpTasks(){
         return this.tasks
+      },
+      role() {
+        return sessionStorage.getItem('role')
       }
     },
     methods:{
-      submitUpload() {
-        this.$refs.upload.submit();
-        setTimeout(()=>{
-          this.getAllTasks()
-          console.log('fff')
-        },10000)
-
-      },
-      handleChange(file, fileList) {
-        console.log(file, fileList);
-        if(!file.response){
-          this.uploadUrl = ""
-        }else{
-          console.log(file.response.task.url)
-          this.uploadUrl = file.response.task.url
-        }
-      },
-      getAllTasks(){
-        axios.post('/tasks/studentGetTasks')
-          .then(res => {
-            console.log(res)
-            this.tasks = res.data.tasks
-            console.log(this.tasks)
-          })
-          .catch(err =>{
-            console.log(err)
-          })
-      },
       deleteTask(event){
         alert('确定删除？')
         axios.post('tasks/delete',qs.stringify({
@@ -78,6 +72,10 @@
           .catch(err => {
             console.log(err)
           })
+      },
+      getDetails(row){
+        this.url = row.url
+        console.log(this.url)
       }
     },
     beforeCreate(){

@@ -13,8 +13,14 @@
             text-color="#dfe6e9"
             :collapse-transition= "false">
 
-            <el-menu-item index="/teacher/allTeacher"><i class="el-icon-user" style="width: 50px"></i>
-              <span>主页</span></el-menu-item>
+            <el-menu-item index="/student/home" v-if="role==='student'">
+              <i class="el-icon-tickets" style="width: 50px"></i>
+              <span>主页</span>
+            </el-menu-item>
+            <el-menu-item index="/teacher/home" v-if="role==='teacher'">
+              <i class="el-icon-tickets" style="width: 50px"></i>
+              <span>主页</span>
+            </el-menu-item>
             <el-submenu index="2">
               <template slot="title">
                 <i class="el-icon-search" style="width: 50px"></i>
@@ -35,6 +41,7 @@
               </template>
               <el-menu-item-group>
                 <template slot="title"></template>
+                <el-menu-item index="/team/mine" v-if="role==='student'">我的小组</el-menu-item>
                 <el-menu-item index="/team/allTeam">查看小组</el-menu-item>
                 <el-menu-item index="/team/search">查找小组</el-menu-item>
                 <el-menu-item index="/team/select" v-if="role==='student'">选择小组</el-menu-item>

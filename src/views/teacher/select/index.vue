@@ -4,6 +4,7 @@
 
 <script>
   import axios from 'axios'
+  axios.defaults.withCredentials=true;
   import qs from 'qs'
   export default {
     name: 'SHPTeacher',
@@ -11,6 +12,17 @@
       return {
         studentTeacher:'',
         teachers:[]
+      }
+    },
+    created:{
+      student(){
+        return sessionStorage.getItem("student")
+      },
+      teacher(){
+        return sessionStorage.getItem("teacher")
+      },
+      team() {
+        return sessionStorage.getItem("team")
       }
     },
     computed:{

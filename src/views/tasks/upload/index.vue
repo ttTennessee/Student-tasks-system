@@ -18,12 +18,19 @@
           width="180">
         </el-table-column>
         <el-table-column
-          prop="updateTime"
-          label="上传时间"
-          width="180">
+          prop="url"
+          label="地址"
+          width="550">
+        </el-table-column>
+        <el-table-column
+          width="100">
+          <el-button type="primary" @click="ToUrl">运行</el-button>
+        </el-table-column>
+        <el-table-column
+          width="100">
+          <el-button type="primary" v-if="role === 'student'">删除</el-button>
         </el-table-column>
       </el-table>
-    <br/>
 
 
       <el-upload
@@ -41,7 +48,7 @@
         <div slot="tip" class="el-upload__tip">一次只能上传一个war文件，且不超过50MB</div>
 
       </el-upload>
-      <!--<span slot="footer" class="dialog-footer">
+<!--      <span slot="footer" class="dialog-footer">
           <el-button @click="visible = false">取消</el-button>
           <el-button type="primary" @click="submitUpload()">确定</el-button>
         </span>-->
@@ -55,13 +62,14 @@
 
 /*  import {formatDate} from '@/utils/time.js'*/
   import axios from 'axios'
-
+  axios.defaults.withCredentials=true;
   export default {
     data() {
       return {
         uploadUrl:'',
         fileList: [],
         tasks:[],
+        visible,
         isShow:false
       }
     },
@@ -71,6 +79,12 @@
       },
       dataUpTasks() {
         return this.tasks
+      },
+      team(){
+        return sessionStorage.getItem("team")
+      },
+      role(){
+        return sessionStorage.getItem('role')
       }
     },
 
@@ -107,18 +121,18 @@
             console.log(err)
           })
       },
-
-      created:function (){
-        axios.post('/tasks/studentGetTasks')
-          .then(res => {
-            console.log(res)
-            this.tasks = res.data.tasks
-            console.log(this.tasks)
-          })
-          .catch(err => {
-            console.log(err)
-          })
+      created(){
+        this.getAllTasks()
       },
+      ToUrl(){
+        /*let details = this.$router.resolve({
+          name: "details",
+          // query: params,
+          // params:{catId:params.catId}
+        });*/
+        // window.open("http://www.jfsahre.xyz:8080", "_blank")
+        this.$router.push("/student/home")
+      }
 
     }
   }

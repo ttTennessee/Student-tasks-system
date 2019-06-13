@@ -1,9 +1,43 @@
 <template>
-    
+  <div>
+  <el-input type="text" style="width:25%;margin:20px 20px 20px 20px" v-model="studentTeacher"></el-input>
+  <el-button type="primary" style="width:20%;margin-bottom:30px;margin-top: 20px"
+             @click="searchTeacher">搜索老师</el-button>
+
+  <el-table
+    :data="teachers"
+    style="width: 100%">
+    <el-table-column
+      prop="id"
+      label="ID"
+      width="180">
+    </el-table-column>
+    <el-table-column
+      prop="email"
+      label="邮箱"
+      width="250">
+    </el-table-column>
+    <el-table-column
+      prop="name"
+      label="姓名"
+      width="180">
+    </el-table-column>
+    <el-table-column
+      prop="subject"
+      label="科目"
+      width="180">
+    </el-table-column>
+
+    <el-table-column v-if="role==='student'">
+      <el-button type="success" round>选择</el-button>
+    </el-table-column>
+  </el-table>
+  </div>
 </template>
 
 <script>
   import axios from 'axios'
+  axios.defaults.withCredentials=true;
   import qs from 'qs'
   export default {
     name: 'SHPTeacher',
@@ -13,9 +47,13 @@
         teachers:[]
       }
     },
+
     computed:{
       teacher(){
-        return this.$store.state.students.teacher
+        return sessionStorage.getItem("teacher")
+      },
+      role() {
+        return sessionStorage.getItem('role')
       }
     },
     methods:{
@@ -26,7 +64,7 @@
         )
           .then(res => {
             console.log(res)
-            alert(res.data.msg)
+            this.teachers = res.data.teachers
           })
           .catch(err => {
             console.log(err)

@@ -92,6 +92,7 @@
 <script>
   import {validEmail, validNumber} from "@/utils/validate";
   import axios from 'axios'
+  axios.defaults.withCredentials=true;
   import qs from 'qs'
 
   export default {
@@ -213,10 +214,8 @@
           .then(response => {
             console.log(response);
             if(response.data.teacher){
-              this.$store.commit('add', response);
-              sessionStorage.setItem("student",response.data.teacher)
-              sessionStorage.setItem("role","teacher")
-              this.$router.push('/student/home')
+              this.$store.commit('addTeacher', response);
+              this.$router.push('/teacher/login')
             }else{
               alert(response.data.msg)
             }

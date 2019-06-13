@@ -47,6 +47,9 @@ export default {
         withoutAnimation: this.sidebar.withoutAnimation,
         mobile: this.device === 'mobile'
       }
+    },
+    role(){
+      return sessionStorage.getItem("role")
     }
   },
   methods: {
