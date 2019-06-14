@@ -26,12 +26,6 @@ const nestedRouter = {
       meta: { title: '查看小组' }
     },
     {
-      path: '/selectTeam',
-      component: () => import('@/views/team/select/index'),
-      name: 'selectTeam',
-      meta: { title: '选择小组' }
-    },
-    {
       path: '/createTeam',
       component: () => import('@/views/team/create/index'),
       name: 'createTeam',

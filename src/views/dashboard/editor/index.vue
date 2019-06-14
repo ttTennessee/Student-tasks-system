@@ -1,14 +1,13 @@
 <template>
   <div class="dashboard-editor-container">
     <div class=" clearfix">
-      <pan-thumb :image="avatar" style="float: left">
-        Your roles:
-        <span v-for="item in roles" :key="item" class="pan-info-roles">{{ item }}</span>
+      <pan-thumb  style="float: left">
+        Your name:
+        <span class="pan-info-roles">{{teacherName}}</span>
       </pan-thumb>
       <github-corner style="position: absolute; top: 0px; border: 0; right: 0;" />
       <div class="info-container">
-        <span class="display_name">{{ name }}</span>
-        <span style="font-size:20px;padding-top:20px;display:inline-block;">Editor's Dashboard</span>
+        <span style="font-size:20px;padding-top:20px;display:inline-block;">教师主页</span>
       </div>
     </div>
     <div>
@@ -24,7 +23,11 @@ import GithubCorner from '@/components/GithubCorner'
 
 export default {
   name: 'DashboardEditor',
-  components: { PanThumb, GithubCorner },
+  components: {
+    PanThumb,
+    GithubCorner,
+
+  },
   data() {
     return {
       emptyGif: 'https://wpimg.wallstcn.com/0e03b7da-db9e-4819-ba10-9016ddfdaed3'
@@ -32,10 +35,11 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'name',
-      'avatar',
       'role'
-    ])
+    ]),
+    teacherName(){
+      return this.name
+    }
   }
 }
 </script>

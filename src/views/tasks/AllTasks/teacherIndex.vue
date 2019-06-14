@@ -21,11 +21,10 @@
       </el-table-column>
       <el-table-column
         width="100">
-
-          <a :href="getDetails" target="view_window">
-            <el-button @click="getUrl" type="primary" icon="el-icon-view">
+          <a :href="getUrl" target="view_window">
+<!--            <el-button @click="getUrl" type="primary" icon="el-icon-view">-->
               运行
-            </el-button>
+<!--            </el-button>-->
           </a>
 <!--        <el-link>查看<i class="el-icon-view el-icon&#45;&#45;right"></i> </el-link>-->
       </el-table-column>
@@ -81,16 +80,17 @@
       getDetails(row){
         this.url = row.url
         console.log(row)
-        return row.url
       }
 
     },
     beforeCreate(){
-      axios.post('/tasks/studentGetTasks')
+      axios.post('/tasks/AllTask')
         .then(res => {
           console.log(res)
+          if (!res.data.student){
+            this.$message(res.data.tasks)
+          }
           this.tasks = res.data.tasks
-          console.log(this.tasks)
         })
         .catch(err =>{
           console.log(err)

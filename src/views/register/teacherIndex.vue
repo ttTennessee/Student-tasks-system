@@ -16,7 +16,7 @@
           tabindex="1"
           autocomplete="on"
           style="width: 380px"
-          placeholder="email"
+          placeholder="请输入邮箱"
         />
       </el-form-item>
       <el-button :loading="loading" type="primary" style="width:20%;margin-bottom:30px;" @click.native.prevent='getCode' :disabled="disabled">{{buttonTxt}}</el-button>
@@ -35,7 +35,7 @@
           tabindex="1"
           autocomplete="on"
           style="width: 380px"
-          placeholder="code"
+          placeholder="请输入验证码"
         />
       </el-form-item>
 
@@ -50,7 +50,7 @@
           tabindex="1"
           autocomplete="on"
           style="width: 380px"
-          placeholder="name"
+          placeholder="请输入姓名"
         />
       </el-form-item>
 
@@ -65,7 +65,7 @@
           tabindex="1"
           autocomplete="on"
           style="width: 380px"
-          placeholder="password"
+          placeholder="请输入密码"
         />
       </el-form-item>
 
@@ -80,7 +80,7 @@
           tabindex="1"
           autocomplete="on"
           style="width: 380px"
-          placeholder="subject"
+          placeholder="请输入科目"
         />
       </el-form-item>
 
@@ -214,7 +214,6 @@
           .then(response => {
             console.log(response);
             if(response.data.teacher){
-              this.$store.commit('addTeacher', response);
               this.$router.push('/teacher/login')
             }else{
               alert(response.data.msg)

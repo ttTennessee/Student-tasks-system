@@ -2,7 +2,8 @@
   <div>
     <el-table
       :data="teachers"
-      style="width: 100%">
+      style="width: 100%"
+      @row-click="getDetails">
       <el-table-column
         prop="id"
         label="ID"
@@ -25,7 +26,19 @@
       </el-table-column>
 
       <el-table-column v-if="role==='student'">
-        <el-button type="success" round >选择</el-button>
+        <template  slot-scope="scope">
+          <el-popover
+            placement="top"
+            width="160"
+            v-model="visible">
+            <p>确定选择这个老师码？</p>
+            <div style="text-align: right; margin: 0">
+              <el-button size="mini" type="text" @click="visible = false">取消</el-button>
+              <el-button type="primary" size="mini" @click="visible = false">确定</el-button>
+            </div>
+            <el-button slot="reference" type="success" round @click="chooseTeacher">选择</el-button>
+          </el-popover>
+        </template>
       </el-table-column>
     </el-table>
   </div>
@@ -40,7 +53,9 @@
     data(){
       return {
         studentTeacher:'',
-        teachers:[]
+        teachers:[],
+        name:'',
+        visible:false
       }
     },
     computed:{
@@ -64,18 +79,30 @@
     },
 
     methods:{
-      chooseTeacher() {
+      chooseTeacher(row) {
+        var _this = this
+        this.$watch("name",function () {
+          if (_this.name !== ''){
+            console.log(_this.name)
+          } else {
+            console.log("null")
+          }
+        })
         axios.post('/student/chooseTeacher',qs.stringify({
-            name:this.studentTeacher
+            name:_this.name
           })
         )
           .then(res => {
+            console.log(this.name)
             console.log(res)
             alert(res.data.msg)
           })
           .catch(err => {
             console.log(err)
           })
+      },
+      getDetails(row){
+        this.name = row.name
       }
     }
   }

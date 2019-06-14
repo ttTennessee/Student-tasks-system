@@ -6,7 +6,8 @@
 
   <el-table
     :data="teachers"
-    style="width: 100%">
+    style="width: 100%"
+    v-if="isShow">
     <el-table-column
       prop="id"
       label="ID"
@@ -44,7 +45,8 @@
     data(){
       return {
         studentTeacher:'',
-        teachers:[]
+        teachers:[],
+        isShow:false
       }
     },
 
@@ -63,8 +65,13 @@
           })
         )
           .then(res => {
-            console.log(res)
-            this.teachers = res.data.teachers
+            if (!res.data.teachers) {
+              this.$message("输入的名字不能为空")
+            }else {
+              console.log(res)
+              this.isShow = true
+              this.teachers = res.data.teachers
+            }
           })
           .catch(err => {
             console.log(err)

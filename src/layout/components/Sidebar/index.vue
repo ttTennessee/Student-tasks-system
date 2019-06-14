@@ -17,10 +17,12 @@
               <i class="el-icon-tickets" style="width: 50px"></i>
               <span>主页</span>
             </el-menu-item>
+
             <el-menu-item index="/teacher/home" v-if="role==='teacher'">
               <i class="el-icon-tickets" style="width: 50px"></i>
               <span>主页</span>
             </el-menu-item>
+
             <el-submenu index="2">
               <template slot="title">
                 <i class="el-icon-search" style="width: 50px"></i>
@@ -30,7 +32,6 @@
                 <template slot="title"></template>
                 <el-menu-item index="/teacher/allTeacher">所有老师</el-menu-item>
                 <el-menu-item index="/teacher/search">查询老师</el-menu-item>
-                <el-menu-item index="/teacher/select" v-if="role==='student'">选择老师</el-menu-item>
               </el-menu-item-group>
             </el-submenu>
 
@@ -44,24 +45,26 @@
                 <el-menu-item index="/team/mine" v-if="role==='student'">我的小组</el-menu-item>
                 <el-menu-item index="/team/allTeam">查看小组</el-menu-item>
                 <el-menu-item index="/team/search">查找小组</el-menu-item>
-                <el-menu-item index="/team/select" v-if="role==='student'">选择小组</el-menu-item>
                 <el-menu-item index="/team/create" v-if="role==='student'">创建小组</el-menu-item>
               </el-menu-item-group>
             </el-submenu>
 
-          <el-submenu index="4">
+            <el-submenu index="4">
 
-            <template slot="title">
-              <i class="el-icon-bell" style="width: 50px"></i>
-              <span>作业管理</span>
-            </template>
-            <el-menu-item-group>
-              <template slot="title"></template>
-              <el-menu-item index="/tasks/all">查看作业</el-menu-item>
-              <el-menu-item index="/tasks/upload" v-if="role==='student'">上传作业</el-menu-item>
-              <el-menu-item index="/tasks/delete" v-if="role==='student'">删除作业</el-menu-item>
-            </el-menu-item-group>
-          </el-submenu>
+              <template slot="title">
+                <i class="el-icon-bell" style="width: 50px"></i>
+                <span>作业管理</span>
+              </template>
+              <el-menu-item-group>
+                <template slot="title"></template>
+                <el-menu-item index="/tasks/all" v-if="role==='student'">查看作业</el-menu-item>
+                <el-menu-item index="/tasks/teacherAll" v-if="role==='teacher'">查看作业</el-menu-item>
+                <el-menu-item index="/tasks/upload" v-if="role==='student'">上传作业</el-menu-item>
+              </el-menu-item-group>
+            </el-submenu>
+
+            <el-menu-item index="" @click.prevent>
+            </el-menu-item>
       </el-menu>
         </el-scrollbar>
 

@@ -20,13 +20,33 @@
       </el-table-column>
 
       <el-table-column
-        width="180">
-        <el-button type="primary">查看组员</el-button>
+        width="180px">
+        <template  slot-scope="scope">
+          <el-popover
+            placement="right"
+            trigger="click">
+            <el-table :data="studentInTeam">
+              <el-table-column width="100" property="id" label="学号"></el-table-column>
+              <el-table-column width="150" property="number" label="姓名"></el-table-column>
+            </el-table>
+            <el-button slot="reference" type="primary">查看组员</el-button>
+          </el-popover>
+        </template>
       </el-table-column>
 
       <el-table-column
         width="180">
-        <el-button type="success">查看作业</el-button>
+        <template  slot-scope="scope">
+          <el-popover
+            placement="right"
+            trigger="click">
+            <el-table :data="studentInTeam">
+              <el-table-column width="100" property="id" label="作业名"></el-table-column>
+              <el-table-column width="150" property="number" label="上传时间"></el-table-column>
+            </el-table>
+            <el-button slot="reference" type="success">查看作业</el-button>
+          </el-popover>
+        </template>
       </el-table-column>
 
       <el-table-column
@@ -50,7 +70,8 @@
       return {
         isShow: false,
         studentAllTeam:[],
-        studentTeam:''
+        studentTeam:'',
+        studentInTeam:[],
       }
     },
     computed:{

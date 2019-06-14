@@ -71,7 +71,7 @@ export const constantRoutes = [
       {
         path: '/student/home',
         component: () => import('@/views/dashboard/student'),
-        name: 'Dashboard',
+        name: '个人主页',
         meta: { title: 'Dashboard', icon: 'dashboard', affix: true }
       }
     ]
@@ -102,12 +102,6 @@ export const constantRoutes = [
         meta: { title: '查看小组'  }
       },
       {
-        path: '/team/select',
-        component: () => import('@/views/team/select/index'),
-        name: 'selectTeam',
-        meta: { title: '选择小组'}
-      },
-      {
         path: '/team/create',
         component: () => import('@/views/team/create/index'),
         name: 'createTeam',
@@ -115,8 +109,8 @@ export const constantRoutes = [
       },
       {
         path: '/team/mine',
-        component: () => import('@/views/team/create/index'),
-        name: 'createTeam',
+        component: () => import('@/views/team/mine/index'),
+        name: 'mineTeam',
         meta: { title: '我的小组' }
       },
     ]
@@ -146,12 +140,6 @@ export const constantRoutes = [
         component: () => import('@/views/teacher/AllTeacher/index'),
         name: 'allTeacher',
         meta: { title: '所有老师'  }
-      },
-      {
-        path: '/teacher/select',
-        component: () => import('@/views/teacher/select/index'),
-        name: 'selectTeacher',
-        meta: { title: '选择老师'}
       }
     ]
   },
@@ -176,16 +164,16 @@ export const constantRoutes = [
         meta: { title: '查看作业'}
       },
       {
+        path: '/tasks/teacherAll',
+        component: () => import('@/views/tasks/AllTasks/teacherIndex'),
+        name: 'teacherTasks',
+        meta: { title: '查看作业'}
+      },
+      {
         path: '/tasks/upload',
         component: () => import('@/views/tasks/upload/index'),
         name: 'upload',
         meta: { title: '上传作业'  }
-      },
-      {
-        path: '/tasks/delete',
-        component: () => import('@/views/tasks/delete/index'),
-        name: 'delete',
-        meta: { title: '删除作业'}
       }
     ]
   },

@@ -6,7 +6,8 @@
 
       <el-table
         :data="tasks"
-        style="width: 100%">
+        style="width: 100%"
+        @row-click="getDetails">
         <el-table-column
           prop="id"
           label="ID"
@@ -24,7 +25,12 @@
         </el-table-column>
         <el-table-column
           width="100">
-          <el-button type="primary" @click="ToUrl">运行</el-button>
+          <a  :href="getUrl()" target="view_window">
+<!--            <el-button type="primary" icon="el-icon-view">-->
+              <span>运行</span>
+<!--            </el-button>-->
+          </a>
+          <!--        <el-link>查看<i class="el-icon-view el-icon&#45;&#45;right"></i> </el-link>-->
         </el-table-column>
         <el-table-column
           width="100">
@@ -69,8 +75,8 @@
         uploadUrl:'',
         fileList: [],
         tasks:[],
-        visible,
-        isShow:false
+        isShow:false,
+        taskUrl:''
       }
     },
     computed: {
@@ -124,14 +130,12 @@
       created(){
         this.getAllTasks()
       },
-      ToUrl(){
-        /*let details = this.$router.resolve({
-          name: "details",
-          // query: params,
-          // params:{catId:params.catId}
-        });*/
-        // window.open("http://www.jfsahre.xyz:8080", "_blank")
-        this.$router.push("/student/home")
+      getDetails(row){
+        this.url = row.url
+      },
+      getUrl(){
+        console.log(this.url)
+        return this.url
       }
 
     }

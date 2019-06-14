@@ -16,7 +16,7 @@
             tabindex="1"
             autocomplete="on"
             style="width: 380px"
-            placeholder="email"
+            placeholder="请输入邮箱"
           />
         </el-form-item>
       <el-button :loading="loading" type="primary" style="width:20%;margin-bottom:30px;" @click.native.prevent='getCode' :disabled="disabled">{{buttonTxt}}</el-button>
@@ -35,7 +35,7 @@
           tabindex="1"
           autocomplete="on"
           style="width: 380px"
-          placeholder="code"
+          placeholder="请输入验证码"
         />
       </el-form-item>
 
@@ -57,7 +57,7 @@
           tabindex="1"
           autocomplete="on"
           style="width: 380px"
-          placeholder="name"
+          placeholder="请输入姓名"
         />
       </el-form-item>
 
@@ -72,7 +72,7 @@
           tabindex="1"
           autocomplete="on"
           style="width: 380px"
-          placeholder="number"
+          placeholder="请输入学号"
         />
       </el-form-item>
 
@@ -87,7 +87,7 @@
         tabindex="1"
         autocomplete="on"
         style="width: 380px"
-        placeholder="password"
+        placeholder="请输入密码"
       />
     </el-form-item>
       <el-button :loading="loading" type="primary" style="width:20%;margin-bottom:30px;" @click.native.prevent='onSubmit'>注册</el-button>
@@ -223,7 +223,6 @@
           .then(response => {
             console.log(response);
             if(response.data.student){
-               this.$store.commit('addStudent', response);
               this.$router.push('/student/login')
             }else{
               alert(response.data.msg)

@@ -2,7 +2,8 @@
   <div>
     <el-table
       :data="studentAllTeam"
-      style="width: 100%">
+      style="width: 100%"
+      @row-click="getDetails">
       <el-table-column
         prop="id"
         label="ID"
@@ -15,12 +16,32 @@
       </el-table-column>
       <el-table-column
       width="180px">
-        <el-button type="primary">查看组员</el-button>
+        <template  slot-scope="scope">
+          <el-popover
+            placement="right"
+            trigger="click">
+            <el-table :data="studentInTeam">
+              <el-table-column width="100" property="id" label="学号"></el-table-column>
+              <el-table-column width="150" property="number" label="姓名"></el-table-column>
+            </el-table>
+            <el-button slot="reference" type="primary">查看组员</el-button>
+          </el-popover>
+        </template>
       </el-table-column>
 
       <el-table-column
         width="180">
-        <el-button type="success">查看作业</el-button>
+        <template  slot-scope="scope">
+          <el-popover
+            placement="right"
+            trigger="click">
+            <el-table :data="studentInTeam">
+              <el-table-column width="100" property="id" label="作业名"></el-table-column>
+              <el-table-column width="150" property="number" label="上传时间"></el-table-column>
+            </el-table>
+            <el-button slot="reference" type="success">查看作业</el-button>
+          </el-popover>
+        </template>
       </el-table-column>
 
       <el-table-column
@@ -30,7 +51,9 @@
       </el-table-column>
 
     </el-table>
+
   </div>
+
 </template>
 
 <script>
@@ -42,8 +65,10 @@
     data(){
       return {
         studentTeam:'',
-        studentCreateTeam:'',
         studentAllTeam:[],
+        visible: false,
+        studentInTeam:[],
+        id:0
       }
     },
     computed:{
@@ -72,19 +97,6 @@
     },
 
     methods:{
-      searchTeam() {
-        axios.post('/team/searchTeam',qs.stringify({
-            number:this.studentTeam
-          })
-        )
-          .then(res => {
-            console.log(res)
-            alert(res.data.msg)
-          })
-          .catch(err => {
-            console.log(err)
-          })
-      },
       selectTeam() {
         axios.post('/team/selectTeam',qs.stringify({
             number:this.studentTeam
@@ -97,6 +109,19 @@
             console.log(err)
           })
       },
+      getStudentInTeam(){
+        axios.post("/team/getStudentInTeam",this.id)
+          .then(res =>{
+            this.studentInTeam = res.data.students
+          }).catch(err => {
+          console.log(err)
+        })
+      },
+      getDetails(row){
+        this.id = row.id
+        console.log(row)
+      },
+
       beforeCreate(){
 
       },
