@@ -34,9 +34,9 @@
             <p>确定选择这个老师码？</p>
             <div style="text-align: right; margin: 0">
               <el-button size="mini" type="text" @click="visible = false">取消</el-button>
-              <el-button type="primary" size="mini" @click="visible = false">确定</el-button>
+              <el-button type="primary" size="mini"@click="chooseTeacher">确定</el-button>
             </div>
-            <el-button slot="reference" type="success" round @click="chooseTeacher">选择</el-button>
+            <el-button slot="reference" type="success" round >选择</el-button>
           </el-popover>
         </template>
       </el-table-column>
@@ -79,10 +79,11 @@
     },
 
     methods:{
-      chooseTeacher(row) {
+      chooseTeacher() {
+      this.visible = false
         var _this = this
         this.$watch("name",function () {
-          if (_this.name !== ''){
+          if (_this.name !== '' && _this.name){
             console.log(_this.name)
           } else {
             console.log("null")

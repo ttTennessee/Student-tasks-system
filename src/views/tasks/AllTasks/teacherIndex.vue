@@ -87,8 +87,8 @@
       axios.post('/tasks/AllTask')
         .then(res => {
           console.log(res)
-          if (!res.data.student){
-            this.$message(res.data.tasks)
+          if (!res.data.tasks){
+            this.$message(res.data.msg)
           }
           this.tasks = res.data.tasks
         })
