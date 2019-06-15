@@ -1,6 +1,6 @@
 <template>
   <div>
-  <el-input type="text" style="width:25%;margin:20px 20px 20px 20px" v-model="studentTeacher"></el-input>
+  <el-input type="text" style="width:25%;margin:20px 20px 20px 20px" v-model="studentTeacher" placeholder="请输入老师姓名"></el-input>
   <el-button type="primary" style="width:20%;margin-bottom:30px;margin-top: 20px"
              @click="searchTeacher">搜索老师</el-button>
 
@@ -30,7 +30,19 @@
     </el-table-column>
 
     <el-table-column v-if="role==='student'">
-      <el-button type="success" round>选择</el-button>
+      <template  slot-scope="scope">
+        <el-popover
+          width="160"
+          placement="right"
+          v-model="visible">
+          <p>确定选择？</p>
+          <div style="text-align: right; margin: 0">
+            <el-button size="mini" type="text" @click="visible = false">取消</el-button>
+            <el-button type="primary" size="mini"@click="chooseTeacher">确定</el-button>
+          </div>
+          <el-button slot="reference" type="success" round>选择</el-button>
+        </el-popover>
+      </template>
     </el-table-column>
   </el-table>
   </div>
@@ -78,17 +90,22 @@
           })
       },
       chooseTeacher() {
+        this.visible = false
         axios.post('/student/chooseTeacher',qs.stringify({
-            name:this.studentTeacher
+            name:this.$store.state.teacherName
           })
         )
           .then(res => {
+            console.log(this.name)
             console.log(res)
-            alert(res.data.msg)
+            this.$message(res.data.msg)
           })
           .catch(err => {
             console.log(err)
           })
+      },
+      getDetails(row){
+        this.$store.commit("teacherName",row.name)
       },
       allTeacher(){
         axios.post('/student/getAllTeachers')

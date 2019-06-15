@@ -57,7 +57,7 @@
               </template>
               <el-menu-item-group>
                 <template slot="title"></template>
-                <el-menu-item index="/tasks/all" v-if="role==='student'">查看作业</el-menu-item>
+                <el-menu-item index="/tasks/teamTasks" v-if="role==='student'">我的作业</el-menu-item>
                 <el-menu-item index="/tasks/teacherAll" v-if="role==='teacher'">查看作业</el-menu-item>
                 <el-menu-item index="/tasks/upload" v-if="role==='student'">上传作业</el-menu-item>
               </el-menu-item-group>

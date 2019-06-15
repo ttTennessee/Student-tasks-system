@@ -24,7 +24,7 @@
               <el-table-column width="100" property="id" label="学号"></el-table-column>
               <el-table-column width="150" property="number" label="姓名"></el-table-column>
             </el-table>
-            <el-button slot="reference" type="primary">查看组员</el-button>
+            <el-button slot="reference" type="primary" @click="getStudentInTeam">查看组员</el-button>
           </el-popover>
         </template>
       </el-table-column>
@@ -35,11 +35,11 @@
           <el-popover
             placement="right"
             trigger="click">
-            <el-table :data="studentInTeam">
-              <el-table-column width="100" property="id" label="作业名"></el-table-column>
-              <el-table-column width="150" property="number" label="上传时间"></el-table-column>
+            <el-table :data="tasks">
+              <el-table-column width="200" property="name" label="作业名"></el-table-column>
+              <el-table-column width="250" property="updateTime" label="上传时间"></el-table-column>
             </el-table>
-            <el-button slot="reference" type="success">查看作业</el-button>
+            <el-button slot="reference" type="success" @click="getTasks">查看作业</el-button>
           </el-popover>
         </template>
       </el-table-column>
@@ -68,7 +68,9 @@
         studentAllTeam:[],
         visible: false,
         studentInTeam:[],
-        id:0
+        tasks:[],
+        id:0,
+        team:{}
       }
     },
     computed:{
@@ -78,14 +80,12 @@
       teacher(){
         return sessionStorage.getItem("teacher")
       },
-      team(){
-        return sessionStorage.getItem("team")
-      },
       role(){
         return sessionStorage.getItem("role")
       }
     },
     created:function(){
+      this.team = JSON.parse(sessionStorage.getItem("team"))
       axios.get('team/getAll')
         .then(res => {
           console.log(res)
@@ -110,18 +110,35 @@
           })
       },
       getStudentInTeam(){
-        axios.post("/team/getStudentInTeam",this.id)
+        if (this.team.id) {
+          console.log(this.team.id)
+          axios.post("/team/getStudentInTeam", qs.stringify({
+            teamId: this.team.id
+          }))
+            .then(res => {
+              console.log(res)
+              this.studentInTeam = res.data.students
+            }).catch(err => {
+            console.log(err)
+          })
+        }else {
+          this.$message(this.team.msg)
+        }
+      },
+      getDetails(row){
+        this.$store.commit("teamId",row.id)
+      },
+      getTasks(){
+        axios.post("/tasks/teamTasks",qs.stringify({
+          teamId: this.team.id
+        }))
           .then(res =>{
-            this.studentInTeam = res.data.students
+            console.log(res)
+            this.tasks = res.data.tasks
           }).catch(err => {
           console.log(err)
         })
       },
-      getDetails(row){
-        this.id = row.id
-        console.log(row)
-      },
-
       beforeCreate(){
 
       },

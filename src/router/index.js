@@ -29,7 +29,7 @@ export const constantRoutes = [
     redirect : '/student/login'
   },
   {
-    path: '/dashboard',
+    path: '/学生主页',
     hidden: true,
     redirect : role==='student'? '/student/home' : '/teacher/home'
   },
@@ -158,15 +158,15 @@ export const constantRoutes = [
 
     children: [
       {
-        path: '/tasks/all',
-        component: () => import('@/views/tasks/AllTasks/index'),
-        name: 'allTasks',
-        meta: { title: '查看作业'}
+        path: '/tasks/teamTasks',
+        component: () => import('@/views/tasks/teamTasks/index'),
+        name: 'teamTasks',
+        meta: { title: '我的作业'}
       },
       {
         path: '/tasks/teacherAll',
-        component: () => import('@/views/tasks/AllTasks/teacherIndex'),
-        name: 'teacherTasks',
+        component: () => import('@/views/tasks/AllTasks/index'),
+        name: 'allTasks',
         meta: { title: '查看作业'}
       },
       {
@@ -187,7 +187,7 @@ export const constantRoutes = [
       {
         path: '/teacher/home',
         component: () => import('@/views/dashboard/editor'),
-        name: 'Dashboard',
+        name: '教师主页',
         meta: { title: 'Dashboard', icon: 'dashboard', affix: true },
       }
     ]

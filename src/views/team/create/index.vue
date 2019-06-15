@@ -36,12 +36,8 @@
           number:this.studentCreateTeam
         }))
           .then(res=>{
-            console.log("11111111")
-            console.log(res.data.team)
-            console.log("11111111")
-            console.log(res.data)
             sessionStorage.setItem("team",res.data.team)
-            alert(res.data.msg)
+            this.$message(res.data.msg)
           })
           .catch(err => {
             console.log(err)

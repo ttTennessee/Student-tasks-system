@@ -55,7 +55,6 @@
 
 <script>
 import { validEmail } from '@/utils/validate'
-
 import axios from 'axios'
 axios.defaults.withCredentials=true;
 import qs from 'qs'
@@ -93,7 +92,9 @@ export default {
       loading: false,
       showDialog: false,
       redirect: undefined,
-      otherQuery: {}
+      otherQuery: {},
+      cacheView:[],
+      visitView:[]
     }
   },
   watch: {
@@ -109,7 +110,10 @@ export default {
     }
   },
   created() {
+    this.$store.commit('reset')
     // window.addEventListener('storage', this.afterQRScan)
+    this.cacheView = this.$store.state.cachedViews
+    this.visitView = this.$store.state.visitedViews
   },
   mounted() {
     if (this.form.email === '') {
@@ -133,9 +137,9 @@ export default {
           this.value = response
           if(response.data.student){
             this.$store.commit('addStudent', response)
-            sessionStorage.setItem("student",response.data.student)
-            sessionStorage.setItem("teacher",response.data.teacher)
-            sessionStorage.setItem("team",response.data.team)
+            sessionStorage.setItem("student",JSON.stringify(response.data.student))
+            sessionStorage.setItem("teacher",JSON.stringify(response.data.teacher))
+            sessionStorage.setItem("team",JSON.stringify(response.data.team))
             sessionStorage.setItem("role","student")
             this.$router.push('/student/home')
           }else{
@@ -197,7 +201,15 @@ export default {
         }
         return acc
       }, {})
-    }
+    },
+    /*closeAllTags(view) {
+      this.$store.dispatch('tagsView/delAllViews').then(({ visitedViews }) => {
+        if (this.affixTags.some(tag => tag.path === view.path)) {
+          return
+        }
+        this.toLastView(visitedViews, view)
+      })
+    },*/
   }
 }
 </script>

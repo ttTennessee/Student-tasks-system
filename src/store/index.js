@@ -17,6 +17,7 @@ const modules = modulesFiles.keys().reduce((modules, modulePath) => {
   return modules
 }, {})
 
+
 const state = {
   students:{
     student:{},
@@ -26,7 +27,8 @@ const state = {
   teachers:{
     teacher:{}
   },
-  role:true
+  teacherName:'',
+  teamId:0
 }
 const mutations = {
   addStudent(state,response){
@@ -37,8 +39,17 @@ const mutations = {
 
   addTeacher(state,response){
     state.teachers.teacher = response.data.teacher
+  },
+  teacherName(state,name){
+    state.teacherName = name
+  },
+  teamId(state,id){
+    state.teamId = id
+  },
+  reset(modules){
+    modules.tagsView.visitedViews = []
+    modules.tagsView.cachedViews =[]
   }
-
 }
 
 

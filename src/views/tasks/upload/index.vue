@@ -25,16 +25,9 @@
         </el-table-column>
         <el-table-column
           width="100">
-          <a  :href="getUrl()" target="view_window">
-<!--            <el-button type="primary" icon="el-icon-view">-->
-              <span>运行</span>
-<!--            </el-button>-->
-          </a>
-          <!--        <el-link>查看<i class="el-icon-view el-icon&#45;&#45;right"></i> </el-link>-->
-        </el-table-column>
-        <el-table-column
-          width="100">
-          <el-button type="primary" v-if="role === 'student'">删除</el-button>
+          <el-button type="primary" @click="Click" icon="el-icon-view">
+            <span>运行</span>
+          </el-button>
         </el-table-column>
       </el-table>
 
@@ -54,11 +47,6 @@
         <div slot="tip" class="el-upload__tip">一次只能上传一个war文件，且不超过50MB</div>
 
       </el-upload>
-<!--      <span slot="footer" class="dialog-footer">
-          <el-button @click="visible = false">取消</el-button>
-          <el-button type="primary" @click="submitUpload()">确定</el-button>
-        </span>-->
-
     </el-form>
 
   </div>
@@ -76,7 +64,8 @@
         fileList: [],
         tasks:[],
         isShow:false,
-        taskUrl:''
+        isClick:false,
+        team:{}
       }
     },
     computed: {
@@ -85,9 +74,6 @@
       },
       dataUpTasks() {
         return this.tasks
-      },
-      team(){
-        return sessionStorage.getItem("team")
       },
       role(){
         return sessionStorage.getItem('role')
@@ -112,12 +98,13 @@
         if (!file.response){
           this.uploadUrl = ""
         } else {
-          // console.log(file.response.task.url)
           this.uploadUrl = file.response.task.url
         }
       },
       getAllTasks() {
-        axios.post('/tasks/studentGetTasks')
+        axios.post('/tasks/teamTasks',qs.stringify({
+          teamId:this.team.id
+        }))
           .then(res => {
             console.log(res)
             this.tasks = res.data.tasks
@@ -127,17 +114,29 @@
             console.log(err)
           })
       },
-      created(){
-        this.getAllTasks()
-      },
       getDetails(row){
-        this.url = row.url
+        if (this.isClick) {
+          window.open(row.url, '_blank')
+          this.isClick = false
+        }
       },
-      getUrl(){
-        console.log(this.url)
-        return this.url
-      }
-
+      Click(){
+        this.isClick = true
+      },
+    },
+    beforeCreate() {
+      this.team = JSON.parse(sessionStorage.getItem("team"))
+      axios.post('/tasks/teamTasks',qs.stringify({
+        teamId:this.team.id
+      }))
+        .then(res => {
+          console.log(res)
+          this.tasks = res.data.tasks
+          console.log(this.tasks)
+        })
+        .catch(err => {
+          console.log(err)
+        })
     }
   }
 </script>

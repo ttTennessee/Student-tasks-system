@@ -108,7 +108,9 @@ export default {
     }
   },
   created() {
+    this.$store.commit('reset')
     // window.addEventListener('storage', this.afterQRScan)
+
   },
   mounted() {
     if (this.form.email === '') {
@@ -119,6 +121,7 @@ export default {
   },
   destroyed() {
     // window.removeEventListener('storage', this.afterQRScan)
+
   },
   methods: {
     onSubmit() {
@@ -132,7 +135,7 @@ export default {
           this.value = response
           if(response.data.teacher){
             this.$store.commit('addTeacher', response)
-            sessionStorage.setItem("student",response.data.teacher)
+            sessionStorage.setItem("student",JSON.stringify(response.data.teacher))
             sessionStorage.setItem("role","teacher")
             this.$router.push('/teacher/home')
           }else{

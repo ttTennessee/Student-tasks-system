@@ -17,9 +17,6 @@ export default {
     },
     key() {
       return this.$route.path
-    },
-    role(){
-      return sessionStorage.getItem("role")
     }
   }
 }

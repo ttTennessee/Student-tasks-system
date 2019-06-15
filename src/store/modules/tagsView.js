@@ -131,8 +131,8 @@ const actions = {
 
   delAllViews({ dispatch, state }, view) {
     return new Promise(resolve => {
-      dispatch('delAllVisitedViews', view)
-      dispatch('delAllCachedViews', view)
+      dispatch('modules/tagsView/delAllVisitedViews', view)
+      dispatch('modules/tagsView/delAllCachedViews', view)
       resolve({
         visitedViews: [...state.visitedViews],
         cachedViews: [...state.cachedViews]

@@ -55,10 +55,8 @@ export default {
       axios.get('/student/logout')
         .then(res => {
           console.log(res)
-          sessionStorage.removeItem('student')
-          sessionStorage.removeItem('teacher')
-          sessionStorage.removeItem('team')
-          sessionStorage.removeItem('role')
+          window.sessionStorage.clear()
+          this.$store.commit('reset')
           this.$router.push('login')
         })
         .catch(err => {
