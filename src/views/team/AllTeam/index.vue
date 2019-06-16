@@ -70,7 +70,9 @@
         studentInTeam:[],
         tasks:[],
         id:0,
-        team:{}
+        team:{},
+        isMember:false,
+        isTasks:false
       }
     },
     computed:{
@@ -110,34 +112,38 @@
           })
       },
       getStudentInTeam(){
-        if (this.team.id) {
-          console.log(this.team.id)
-          axios.post("/team/getStudentInTeam", qs.stringify({
-            teamId: this.team.id
+        this.isMember = true
+      },
+      getDetails(row){
+        this.id = row.id
+        if (this.isMember){
+          this.isMember = false
+            axios.post("/team/getStudentInTeam", qs.stringify({
+              teamId: this.id
+            }))
+              .then(res => {
+                console.log(res)
+                this.studentInTeam = res.data.students
+              }).catch(err => {
+              console.log(err)
+            })
+        } else if(this.isTasks){
+          this.isTasks = false
+          axios.post("/tasks/teamTasks",qs.stringify({
+            teamId: this.id
           }))
-            .then(res => {
+            .then(res =>{
               console.log(res)
-              this.studentInTeam = res.data.students
+              this.tasks = res.data.tasks
             }).catch(err => {
             console.log(err)
           })
         }else {
-          this.$message(this.team.msg)
+
         }
       },
-      getDetails(row){
-        this.$store.commit("teamId",row.id)
-      },
       getTasks(){
-        axios.post("/tasks/teamTasks",qs.stringify({
-          teamId: this.team.id
-        }))
-          .then(res =>{
-            console.log(res)
-            this.tasks = res.data.tasks
-          }).catch(err => {
-          console.log(err)
-        })
+        this.isTasks = true
       },
       beforeCreate(){
 

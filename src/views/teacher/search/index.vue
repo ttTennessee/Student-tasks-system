@@ -58,7 +58,8 @@
       return {
         studentTeacher:'',
         teachers:[],
-        isShow:false
+        isShow:false,
+        visible:false
       }
     },
 
