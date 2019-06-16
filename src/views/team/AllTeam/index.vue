@@ -24,7 +24,7 @@
               <el-table-column width="100" property="number" label="学号"></el-table-column>
               <el-table-column width="150" property="name" label="姓名"></el-table-column>
             </el-table>
-            <el-button slot="reference" type="primary" @click="getStudentInTeam(scope.row)">查看组员</el-button>
+            <el-button slot="reference" type="primary" @click="getStudentInTeam">查看组员</el-button>
           </el-popover>
         </template>
       </el-table-column>
@@ -47,7 +47,9 @@
       <el-table-column
         v-if="role === 'student'"
         width="180px">
-        <el-button type="info">加入小组</el-button>
+        <template  slot-scope="scope">
+        <el-button type="info" @click="selectTeam(scope.row)">加入小组</el-button>
+        </template>
       </el-table-column>
 
     </el-table>
@@ -88,7 +90,7 @@
     },
     created:function(){
       this.team = JSON.parse(sessionStorage.getItem("team"))
-      axios.get('team/getAll')
+      axios.get('/team/getAll')
         .then(res => {
           console.log(res)
           this.studentAllTeam = res.data.teams
@@ -99,20 +101,21 @@
     },
 
     methods:{
-      selectTeam() {
+      selectTeam(row) {
         axios.post('/team/selectTeam',qs.stringify({
-            number:this.studentTeam
+            number:row.number
           })
         )
           .then(res => {
+            this.$message(res.data.msg)
             console.log(res)
           })
           .catch(err => {
             console.log(err)
           })
       },
-      getStudentInTeam(row){
-
+      getStudentInTeam(){
+        this.isMember = true
       },
       getDetails(row){
         this.id = row.id

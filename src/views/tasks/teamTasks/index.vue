@@ -62,7 +62,7 @@
       methods:{
         deleteTask(event){
           alert('确定删除？')
-          axios.post('tasks/delete',qs.stringify({
+          axios.post('/tasks/delete',qs.stringify({
             taskId:event.target.id
           }))
             .then(res => {
@@ -85,7 +85,7 @@
         Delete(row){
           console.log(row.id)
           alert('确定删除？')
-          axios.post('tasks/delete',qs.stringify({
+          axios.post('/tasks/delete',qs.stringify({
             taskId:row.id
           }))
             .then(res => {

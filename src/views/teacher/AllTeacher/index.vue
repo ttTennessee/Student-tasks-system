@@ -2,8 +2,7 @@
   <div>
     <el-table
       :data="teachers"
-      style="width: 100%"
-      @row-click="getDetails">
+      style="width: 100%">
       <el-table-column
         prop="id"
         label="ID"

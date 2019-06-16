@@ -53,7 +53,9 @@
       <el-table-column
         v-if="role === 'student'"
         width="180">
-        <el-button type="info">加入小组</el-button>
+        <template  slot-scope="scope">
+          <el-button type="info" @click="selectTeam(scope.row)">加入小组</el-button>
+        </template>
       </el-table-column>
     </el-table>
 
@@ -111,14 +113,14 @@
             console.log(err)
           })
       },
-      selectTeam() {
+      selectTeam(row) {
         axios.post('/team/selectTeam',qs.stringify({
-            number:this.studentTeam
+            number:row.number
           })
         )
           .then(res => {
             console.log(res)
-            alert(res.data.msg)
+            this.$message(res.data.msg)
           })
           .catch(err => {
             console.log(err)

@@ -3,11 +3,15 @@
     <div class=" clearfix">
       <pan-thumb  style="float: left">
         Your name:
-        <span class="pan-info-roles">{{teacherName}}</span>
+        <span class="pan-info-roles">{{this.teacher.name}}</span>
       </pan-thumb>
       <github-corner style="position: absolute; top: 0px; border: 0; right: 0;" />
       <div class="info-container">
         <span style="font-size:20px;padding-top:20px;display:inline-block;">教师主页</span>
+        <br/>
+        Email:{{this.teacher.email}}
+        <br/>
+        Subject:{{this.teacher.subject}}
       </div>
     </div>
     <div>
@@ -30,16 +34,17 @@ export default {
   },
   data() {
     return {
-      emptyGif: 'https://wpimg.wallstcn.com/0e03b7da-db9e-4819-ba10-9016ddfdaed3'
+      emptyGif: 'https://wpimg.wallstcn.com/0e03b7da-db9e-4819-ba10-9016ddfdaed3',
+      teacher:{}
     }
   },
   computed: {
     ...mapGetters([
       'role'
-    ]),
-    teacherName(){
-      return this.name
-    }
+    ])
+  },
+  created() {
+    this.teacher = JSON.parse(sessionStorage.getItem("teacher"))
   }
 }
 </script>
