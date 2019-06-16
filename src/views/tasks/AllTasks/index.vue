@@ -1,36 +1,66 @@
 <template>
   <div>
     <el-table
-      :data="tasks"
+      :data="item.tasks"
+      stripe
       style="width: 100%"
-      @row-click="getDetails">
-      <el-table-column
-        prop="id"
-        label="ID"
-        width="180">
-      </el-table-column>
+      v-for="item in tasks">
       <el-table-column
         prop="name"
-        label="名字"
-        width="180">
+        label="项目名"
+        width="200">
       </el-table-column>
       <el-table-column
         prop="url"
         label="地址"
-        width="550">
+        width="300">
       </el-table-column>
       <el-table-column
-        width="100">
-          <a :href="getUrl" target="view_window">
-<!--            <el-button @click="getUrl" type="primary" icon="el-icon-view">-->
-              运行
-<!--            </el-button>-->
-          </a>
-<!--        <el-link>查看<i class="el-icon-view el-icon&#45;&#45;right"></i> </el-link>-->
+        prop="updateTime"
+        label="上传时间"
+        width="280">
       </el-table-column>
       <el-table-column
+        width="130">
+        <template slot-scope="scope">
+          <el-popover
+            placement="left"
+            width="430"
+            trigger="click">
+            <template>
+              <el-table
+                :data="teamMem"
+                stripe
+                style="width: 100%">
+                <el-table-column
+                  prop="id"
+                  label="ID"
+                  width="150">
+                </el-table-column>
+                <el-table-column
+                  prop="number"
+                  label="学号"
+                  width="120">
+                </el-table-column>
+                <el-table-column
+                  prop="name"
+                  label="姓名"
+                  width="120">
+                </el-table-column>
+              </el-table>
+            </template>
+            <el-button slot="reference" @click="TeamMem(scope.row)">小组成员</el-button>
+          </el-popover>
+
+        </template>
+      </el-table-column>
+
+      <el-table-column
+        label="操作"
         width="100">
-        <el-button type="primary" v-if="role === 'student'">删除</el-button>
+        <template slot-scope="scope">
+          <el-button type="success" @click="Run(scope.row)">运行</el-button>
+        </template>
       </el-table-column>
     </el-table>
   </div>
@@ -44,9 +74,9 @@
     name: 'SHPStudent',
     data(){
       return {
-        fileList:[],
         tasks:[],
-        url:''
+        isClick:false,
+        teamMem:[]
       }
     },
     computed:{
@@ -58,9 +88,6 @@
       },
       role() {
         return sessionStorage.getItem('role')
-      },
-      getUrl(){
-        return this.url
       }
     },
     methods:{
@@ -78,19 +105,32 @@
           })
       },
       getDetails(row){
-        this.url = row.url
-        console.log(row)
+        if (this.isClick) {
+          window.open(row.url, '_blank')
+          this.isClick = false
+        }
+      },
+      Run(row){
+        window.open(row.url,'_blank')
+      },
+      TeamMem(row){
+        axios.post('/team/getStudentInTeam',qs.stringify({
+          teamId:row.teamId
+        })).then(res =>{
+          this.teamMem = res.data.students
+        })
       }
 
     },
     beforeCreate(){
       axios.post('/tasks/AllTask')
         .then(res => {
-          console.log(res)
-          if (!res.data.tasks){
+          if (res.data.msg){
             this.$message(res.data.msg)
+          }else {
+            this.tasks = res.data.tasks
+            console.log(this.tasks)
           }
-          this.tasks = res.data.tasks
         })
         .catch(err =>{
           console.log(err)

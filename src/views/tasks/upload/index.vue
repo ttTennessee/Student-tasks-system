@@ -15,7 +15,7 @@
         </el-table-column>
         <el-table-column
           prop="name"
-          label="名字"
+          label="项目名"
           width="180">
         </el-table-column>
         <el-table-column
@@ -40,7 +40,8 @@
         :limit=1
         :on-success="getRes"
         :on-change="handleChange"
-        :auto-upload="false">
+        :auto-upload="false"
+        v-show="ifHave">
 
         <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
         <el-button style="margin-left: 10px;" size="small" type="success" @click="submitUpload">上传到服务器</el-button>
@@ -56,6 +57,7 @@
 
 /*  import {formatDate} from '@/utils/time.js'*/
   import axios from 'axios'
+import qs from 'qs'
   axios.defaults.withCredentials=true;
   export default {
     data() {
@@ -77,22 +79,30 @@
       },
       role(){
         return sessionStorage.getItem('role')
+      },
+      ifHave(){
+        return this.$store.state.isHaveTeam
       }
     },
 
     methods: {
-      getRes(response,file){
-        if (response.task) {
-          this.$message(response.msg)
-        }else {
-          this.$message(response.msg)
-        }
+      getRes(){
+        axios.post('/tasks/studentGetTasks')
+          .then(res => {
+            console.log(res)
+            if (res.data.msg) {
+              this.$message(res.data.msg)
+            }else {
+              this.tasks = res.data.tasks
+              console.log(this.tasks)
+            }
+          })
+          .catch(err => {
+            console.log(err)
+          })
       },
       submitUpload() {
         this.$refs.upload.submit()
-        setTimeout(() => {
-          this.getAllTasks()
-        }, 10000)
       },
       handleChange(file, fileList) {
         if (!file.response){
@@ -122,21 +132,31 @@
       },
       Click(){
         this.isClick = true
-      },
+      }
+
     },
     beforeCreate() {
+      this.$store.commit('setIsHaveTeam',false)
       this.team = JSON.parse(sessionStorage.getItem("team"))
-      axios.post('/tasks/teamTasks',qs.stringify({
-        teamId:this.team.id
-      }))
-        .then(res => {
-          console.log(res)
-          this.tasks = res.data.tasks
-          console.log(this.tasks)
-        })
-        .catch(err => {
-          console.log(err)
-        })
+      if (this.team.number) {
+        console.log("1111",this.team.id)
+        this.$store.commit('setIsHaveTeam',true)
+        axios.post('/tasks/studentGetTasks')
+          .then(res => {
+            console.log(res)
+            if (res.data.msg) {
+              this.$message(res.data.msg)
+            }else {
+              this.tasks = res.data.tasks
+              console.log(this.tasks)
+            }
+          })
+          .catch(err => {
+            console.log(err)
+          })
+      }else{
+        this.$message(this.team)
+      }
     }
   }
 </script>

@@ -28,7 +28,8 @@ const state = {
     teacher:{}
   },
   teacherName:'',
-  teamId:0
+  teamId:0,
+  isHaveTeam:false
 }
 const mutations = {
   addStudent(state,response){
@@ -49,6 +50,9 @@ const mutations = {
   reset(modules){
     modules.tagsView.visitedViews = []
     modules.tagsView.cachedViews =[]
+  },
+  setIsHaveTeam(state,isHaveTeam){
+    state.isHaveTeam = isHaveTeam
   }
 }
 

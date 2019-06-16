@@ -109,6 +109,15 @@ export default {
       immediate: true
     }
   },
+  beforeCreate(){
+    if (sessionStorage.getItem('role')) {
+      if (sessionStorage.getItem("role") === 'teacher') {
+        this.$router.push("/teacher/home")
+      } else if (sessionStorage.getItem("role") === 'student') {
+        this.$router.push("/student/home")
+      }
+    }
+  },
   created() {
     this.$store.commit('reset')
     // window.addEventListener('storage', this.afterQRScan)

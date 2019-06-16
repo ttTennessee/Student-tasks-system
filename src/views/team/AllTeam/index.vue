@@ -21,10 +21,10 @@
             placement="right"
             trigger="click">
             <el-table :data="studentInTeam">
-              <el-table-column width="100" property="id" label="学号"></el-table-column>
-              <el-table-column width="150" property="number" label="姓名"></el-table-column>
+              <el-table-column width="100" property="number" label="学号"></el-table-column>
+              <el-table-column width="150" property="name" label="姓名"></el-table-column>
             </el-table>
-            <el-button slot="reference" type="primary" @click="getStudentInTeam">查看组员</el-button>
+            <el-button slot="reference" type="primary" @click="getStudentInTeam(scope.row)">查看组员</el-button>
           </el-popover>
         </template>
       </el-table-column>
@@ -111,8 +111,8 @@
             console.log(err)
           })
       },
-      getStudentInTeam(){
-        this.isMember = true
+      getStudentInTeam(row){
+
       },
       getDetails(row){
         this.id = row.id

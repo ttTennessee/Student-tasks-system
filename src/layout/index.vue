@@ -58,6 +58,11 @@ export default {
     handleClickOutside() {
       this.$store.dispatch('app/closeSideBar', { withoutAnimation: false })
     }
+  },
+  beforeCreate() {
+    if (!sessionStorage.getItem('role')){
+      this.$router.push('/login')
+    }
   }
 }
 </script>

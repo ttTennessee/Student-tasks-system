@@ -27,8 +27,8 @@
             placement="right"
             trigger="click">
             <el-table :data="studentInTeam">
-              <el-table-column width="100" property="id" label="学号"></el-table-column>
-              <el-table-column width="150" property="number" label="姓名"></el-table-column>
+              <el-table-column width="100" property="number" label="学号"></el-table-column>
+              <el-table-column width="150" property="name" label="姓名"></el-table-column>
             </el-table>
             <el-button slot="reference" type="primary" @click="getStudentInTeam">查看组员</el-button>
           </el-popover>
@@ -75,7 +75,9 @@
         studentInTeam:[],
         tasks:[],
         id:0,
-        team:{}
+        team:{},
+        isMember:false,
+        isTasks:false
       }
     },
     created:function(){
@@ -123,10 +125,14 @@
           })
       },
       getStudentInTeam(){
-        if (this.team.id) {
-          console.log(this.team.id)
+        this.isMember = true
+      },
+      getDetails(row){
+        this.id = row.id
+        if (this.isMember){
+          this.isMember = false
           axios.post("/team/getStudentInTeam", qs.stringify({
-            teamId: this.team.id
+            teamId: this.id
           }))
             .then(res => {
               console.log(res)
@@ -134,23 +140,23 @@
             }).catch(err => {
             console.log(err)
           })
+        } else if(this.isTasks){
+          this.isTasks = false
+          axios.post("/tasks/teamTasks",qs.stringify({
+            teamId: this.id
+          }))
+            .then(res =>{
+              console.log(res)
+              this.tasks = res.data.tasks
+            }).catch(err => {
+            console.log(err)
+          })
         }else {
-          this.$message(this.team.msg)
+
         }
       },
-      getDetails(row){
-        this.$store.commit("teamId",row.id)
-      },
       getTasks(){
-        axios.post("/tasks/teamTasks",qs.stringify({
-          teamId: this.team.id
-        }))
-          .then(res =>{
-            console.log(res)
-            this.tasks = res.data.tasks
-          }).catch(err => {
-          console.log(err)
-        })
+        this.isTasks = true
       },
     }
   }

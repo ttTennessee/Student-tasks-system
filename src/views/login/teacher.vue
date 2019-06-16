@@ -107,6 +107,16 @@ export default {
       immediate: true
     }
   },
+  beforeCreate(){
+    if (sessionStorage.getItem('role')) {
+      console.log(1111)
+      if (sessionStorage.getItem('role') === "teacher") {
+        this.$router.push("/teacher/home")
+      } else if (sessionStorage.getItem('role') === 'student') {
+        this.$router.push("/student/home")
+      }
+    }
+  },
   created() {
     this.$store.commit('reset')
     // window.addEventListener('storage', this.afterQRScan)
@@ -135,7 +145,7 @@ export default {
           this.value = response
           if(response.data.teacher){
             this.$store.commit('addTeacher', response)
-            sessionStorage.setItem("student",JSON.stringify(response.data.teacher))
+            sessionStorage.setItem("teacher",JSON.stringify(response.data.teacher))
             sessionStorage.setItem("role","teacher")
             this.$router.push('/teacher/home')
           }else{
