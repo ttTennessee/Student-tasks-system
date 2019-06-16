@@ -2,7 +2,11 @@
   <div class="dashboard-editor-container">
     <div class=" clearfix">
       <pan-thumb  style="float: left">
-        Your name:
+        Your name:{{this.teacher.name}}
+        <br/>
+        Email:{{this.teacher.email}}
+        <br/>
+        Subject:{{this.teacher.subject}}
         <span class="pan-info-roles">{{teacherName}}</span>
       </pan-thumb>
       <github-corner style="position: absolute; top: 0px; border: 0; right: 0;" />
@@ -30,16 +34,17 @@ export default {
   },
   data() {
     return {
-      emptyGif: 'https://wpimg.wallstcn.com/0e03b7da-db9e-4819-ba10-9016ddfdaed3'
+      emptyGif: 'https://wpimg.wallstcn.com/0e03b7da-db9e-4819-ba10-9016ddfdaed3',
+      teacher:{}
     }
   },
   computed: {
     ...mapGetters([
       'role'
-    ]),
-    teacherName(){
-      return this.name
-    }
+    ])
+  },
+  created() {
+    this.teacher = JSON.parse(sessionStorage.getItem("teacher"))
   }
 }
 </script>

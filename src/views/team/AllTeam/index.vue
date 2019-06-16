@@ -88,7 +88,7 @@
     },
     created:function(){
       this.team = JSON.parse(sessionStorage.getItem("team"))
-      axios.get('team/getAll')
+      axios.get('/team/getAll')
         .then(res => {
           console.log(res)
           this.studentAllTeam = res.data.teams
